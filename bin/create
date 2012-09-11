@@ -30,4 +30,4 @@ sandbox_id=$(gen_token)
 create_sandbox $sandbox_id $kit_name $source_url $rsa_key
 compile_kit_exec $sandbox_id "create"
 
-echo "Created ${sandbox_id}"
+echo "${sandbox_id}"
