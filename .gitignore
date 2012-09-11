@@ -1,0 +1,10 @@
+.DS_Store
+
+# npm
+node_modules
+npm-debug.log
+
+# ruby
+.bundle
+.vagrant
+**/vendor/bundle
