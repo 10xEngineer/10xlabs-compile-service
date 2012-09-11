@@ -31,6 +31,24 @@ function create_sandbox() {
 	chmod 0700 ${DHOME}/$sandbox_id
 }
 
+function sync_source() {
+	sandbox_id=$1
+	source_url=`cat ${DHOME}/$sandbox_id/.source_url`
+
+	# process http sources
+	#
+	# FIXME temporary 'sync' only; we should really support only GIT based updates
+	if [[ $source_url == http* ]]
+	then 
+		curl -s -o /tmp/${sandbox_id}.tar.gz $source_url
+
+		rm -Rf ${DHOME}/$sandbox_id/*
+		tar xvfz /tmp/${sandbox_id}.tar.gz -C ${DHOME}/$sandbox_id/ 1>${DHOME}/$sandbox_id/.extracted
+	fi
+
+	# FIXME add GIT sync support (handle keys)
+}
+
 function compile_kit_exec() {
 	sandbox_id=$1
 	kit_name=`cat ${DHOME}/$sandbox_id/.compile`
@@ -41,9 +59,14 @@ function compile_kit_exec() {
 		current_dir=`pwd`
 		cd ${DHOME}/$sandbox_id
 
-		su $sandbox_id -c "${compiler_root}/${kit_name}/bin/${command} $3 $4"
-		
+		su $sandbox_id -c "${compiler_root}/${kit_name}/bin/${command} $3 $4"		
+
 		cd $current_dir
+
+		if [ ! $command == "destroy" ]
+		then
+			sync_source $sandbox_id
+		fi
 	else
 		echo "Invalid command=$command for kit=$kit_name"
 		exit 5

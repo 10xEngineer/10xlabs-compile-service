@@ -19,4 +19,4 @@ Usage:
 * **TODO** bin/version should test all dependencies before returning actual version
 
 
-		/compile/bin/create test_kit http://somewhere "rsa-key"
+		/compile/bin/create test_kit "https://dl.dropbox.com/s/jr77ovew0z4gziw/validSample.tar.gz?dl=1, https://www.dropbox.com/s/jr77ovew0z4gziw/validSample.tar.gz" "rsa-key"
