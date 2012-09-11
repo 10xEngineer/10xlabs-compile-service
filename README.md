@@ -17,3 +17,6 @@ Usage:
 ## Compile Kit structure
 
 * **TODO** bin/version should test all dependencies before returning actual version
+
+
+		/compile/bin/create test_kit http://somewhere "rsa-key"

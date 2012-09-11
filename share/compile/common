@@ -15,12 +15,18 @@ echo
 }
 
 function create_sandbox() {
-	kit_name=$1
-	sandbox_id=$2
+	sandbox_id=$1
+	kit_name=$2
+	source_url=$3
 
 	$cmd_adduser $sandbox_id -b $DHOME -m --no-user-group -g sandbox --shell /bin/bash
 
 	echo $kit_name >${DHOME}/$sandbox_id/.compile
+	echo $source_url >${DHOME}/$sandbox_id/.source_url
+
+	# setup ssh-key
+	mkdir -p ${DHOME}/$sandbox_id/.ssh
+	echo $rsa_key >${DHOME}/$sandbox_id/.ssh/authorized_keys
 
 	chmod 0700 ${DHOME}/$sandbox_id
 }

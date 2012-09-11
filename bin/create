@@ -8,14 +8,15 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "${SCRIPT_DIR}/../share/compile/common"
 
 # common parameters
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
 then
-	echo "usage: create kit_name rsa_key"
-	exit 2
+	echo "usage: create kit_name source rsa_key"
+	exit 3
 fi
 
 kit_name=$1
-rsa_key=$2
+source_url=$2
+rsa_key=$3
 
 if [ ! -f "${compiler_root}/$1/${version_file}" ] 
 then
@@ -26,7 +27,7 @@ fi
 # generate new sandbox
 sandbox_id=$(gen_token)
 
-create_sandbox $kit_name $sandbox_id 
+create_sandbox $sandbox_id $kit_name $source_url $rsa_key
 compile_kit_exec $sandbox_id "create"
 
 echo "Created ${sandbox_id}"
