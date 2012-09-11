@@ -16,6 +16,7 @@ Usage:
 
 ## Compile Kit structure
 
+* Compile kits names shoud include only a..z0..9-
 * **TODO** bin/version should test all dependencies before returning actual version
 
 
