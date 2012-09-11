@@ -51,14 +51,15 @@ function sync_source() {
 
 function compile_kit_exec() {
 	sandbox_id=$1
-	kit_name=`cat ${DHOME}/$sandbox_id/.compile`
 	command=$2
 
-	if [ ! -d "#{DHOME}/$sandbox_id" ]
+	if [ ! -d ${DHOME}/$sandbox_id ]
 	then
 		echo "Sandbox $sandbox_id does not exists."
 		exit 404
 	fi
+
+	kit_name=`cat ${DHOME}/$sandbox_id/.compile`
 
 	if [ -x "${compiler_root}/${kit_name}/bin/${command}" ]
 	then
@@ -80,5 +81,6 @@ function compile_kit_exec() {
 }
 
 function destroy_sandbox() {
-	$cmd_rmuser -f -r $1 2>/dev/null
+	$cmd_rmuser -f $1 2>/dev/null
+	rm -Rf ${DHOME}/$1
 }
