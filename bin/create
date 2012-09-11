@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-#
-# $1 kit_name
-# $2 rsa_key
 
 # Fail fast and fail hard.
 set -feo pipefail
@@ -18,15 +15,19 @@ then
 	exit 2
 fi
 
+kit_name=$1
+rsa_key=$2
+
 if [ ! -f "${compiler_root}/$1/${version_file}" ] 
 then
-	echo "Requested compiler kit '$1' does not exists."
+	echo "Requested compiler kit '$kit_name' does not exists."
 	exit 3
 fi
 
 # generate new sandbox
-user_id=$(gen_token)
+sandbox_id=$(gen_token)
 
-create_sandbox $user_id
+create_sandbox $kit_name $sandbox_id 
+compile_kit_exec $sandbox_id "create"
 
-
+echo "Created ${sandbox_id}"

@@ -17,6 +17,5 @@ then
 	exit 2
 fi
 
+compile_kit_exec $1 $user_id "destroy"
 destroy_sandbox $1
-
-

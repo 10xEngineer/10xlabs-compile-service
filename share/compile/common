@@ -7,7 +7,6 @@ cmd_rmuser=/usr/sbin/userdel
 compiler_root=/opt/compile
 version_file=bin/version
 
-
 DHOME=/mnt/sandbox
 
 function gen_token() {
@@ -16,10 +15,25 @@ echo
 }
 
 function create_sandbox() {
-	echo $1
-	$cmd_adduser $1 -b $DHOME -m --no-user-group -g sandbox --shell /bin/bash
+	kit_name=$1
+	sandbox_id=$2
 
-	chmod 0700 ${DHOME}/$1
+	$cmd_adduser $sandbox_id -b $DHOME -m --no-user-group -g sandbox --shell /bin/bash
+
+	echo $kit_name >${DHOME}/$sandbox_id/.compile
+
+	chmod 0700 ${DHOME}/$sandbox_id
+}
+
+function compile_kit_exec() {
+	sandbox_id=$1
+	kit_name=`cat ${DHOME}/$sandbox_id/.compile`
+	command=$2
+
+	if [ -x "${compiler_root}/${kit_name}/bin/${command}" ]
+	then
+		${compiler_root}/${kit_name}/bin/${command} $3
+	fi	
 }
 
 function destroy_sandbox() {
