@@ -12,6 +12,6 @@ cp -R bin ${target_dir}
 cp -R share ${target_dir}
 cp README.md ${target_dir}
 
-fpm -s dir -t deb -d 'curl' -n 10xlabs-compile-service -v 0.1 -a all --exclude local/* --exclude build* --exclude compile_kits -C $tmpdir .
+fpm -s dir -t deb -d 'curl' -n 10xlabs-compile-service -v 0.1 -a all --exclude compile_kits -C $tmpdir .
 
 rm -Rf $tmpdir
