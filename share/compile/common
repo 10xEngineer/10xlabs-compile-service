@@ -32,7 +32,12 @@ function compile_kit_exec() {
 
 	if [ -x "${compiler_root}/${kit_name}/bin/${command}" ]
 	then
-		${compiler_root}/${kit_name}/bin/${command} $3
+		current_dir=`pwd`
+		cd ${DHOME}/$sandbox_id
+
+		su $sandbox_id -c ${compiler_root}/${kit_name}/bin/${command} $3
+		
+		cd $current_dir
 	fi	
 }
 
