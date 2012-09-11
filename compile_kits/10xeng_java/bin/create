@@ -1,0 +1,6 @@
+#!/usr/bin/env
+
+# create
+mkdir src
+mkdir test
+mkdir lib 
