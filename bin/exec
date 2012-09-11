@@ -11,7 +11,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ $# -lt 2 ]
 then
 	echo "usage: exec sandbox command [optional-command-args...]"
-	exit 2
+	exit 502
 fi
 
 sandbox_id=$1
