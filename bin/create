@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# $1 kit_name
+# $2 rsa_key
+
+# Fail fast and fail hard.
+set -feo pipefail
+
+# shared logic
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "${SCRIPT_DIR}/../share/compile/common"
+
+# common parameters
+if [ $# -ne 2 ]
+then
+	echo "usage: create kit_name rsa_key"
+	exit 2
+fi
+
+if [ ! -f "${compiler_root}/$1/${version_file}" ] 
+then
+	echo "Requested compiler kit '$1' does not exists."
+	exit 3
+fi
+
+# generate new sandbox
+user_id=$(gen_token)
+
+create_sandbox $user_id
+
+

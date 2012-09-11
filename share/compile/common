@@ -1,0 +1,27 @@
+#
+# shared common logic for compile-service scripts
+#
+
+cmd_adduser=/usr/sbin/useradd
+cmd_rmuser=/usr/sbin/userdel
+compiler_root=/opt/compile
+version_file=bin/version
+
+
+DHOME=/mnt/sandbox
+
+function gen_token() {
+	LC_ALL=C tr -dc a-z0-9 < /dev/urandom | head -c 16 ${1:16}
+echo
+}
+
+function create_sandbox() {
+	echo $1
+	$cmd_adduser $1 -b $DHOME -m --no-user-group -g sandbox --shell /bin/bash
+
+	chmod 0700 ${DHOME}/$1
+}
+
+function destroy_sandbox() {
+	$cmd_rmuser -f -r $1 2>/dev/null
+}

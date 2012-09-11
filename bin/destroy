@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# $1 sandbox
+
+# Fail fast and fail hard.
+set -feo pipefail
+
+# shared logic
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. "${SCRIPT_DIR}/../share/compile/common"
+
+# common parameters
+if [ $# -ne 1 ]
+then
+	echo "usage: destroy sandbox"
+	exit 2
+fi
+
+destroy_sandbox $1
+
+
