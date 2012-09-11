@@ -6,7 +6,6 @@
 set -feo pipefail
 
 # shared logic
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "${SCRIPT_DIR}/../share/compile/common"
 
@@ -17,5 +16,7 @@ then
 	exit 2
 fi
 
-compile_kit_exec $1 $user_id "destroy"
-destroy_sandbox $1
+sandbox_id=$1
+
+compile_kit_exec $sandbox_id "destroy"
+destroy_sandbox $sandbox_id

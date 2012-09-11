@@ -4,7 +4,6 @@
 set -feo pipefail
 
 # shared logic
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . "${SCRIPT_DIR}/../share/compile/common"
 

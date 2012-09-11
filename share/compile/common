@@ -35,9 +35,12 @@ function compile_kit_exec() {
 		current_dir=`pwd`
 		cd ${DHOME}/$sandbox_id
 
-		su $sandbox_id -c ${compiler_root}/${kit_name}/bin/${command} $3
+		su $sandbox_id -c "${compiler_root}/${kit_name}/bin/${command} $3 $4"
 		
 		cd $current_dir
+	else
+		echo "Invalid command=$command for kit=$kit_name"
+		exit 5
 	fi	
 }
 

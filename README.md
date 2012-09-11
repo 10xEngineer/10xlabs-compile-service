@@ -12,3 +12,8 @@ Usage:
 	/opt/10xlabs-compile/bin/exec SANDBOX-ID
 
 	/opt/10xlabs-compile/bin/destroy SANDBOX-ID 
+
+
+## Compile Kit structure
+
+* **TODO** bin/version should test all dependencies before returning actual version
