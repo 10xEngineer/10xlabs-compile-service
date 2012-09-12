@@ -1,23 +1,30 @@
 # 10xLabs compile service infrastructure
 
+First version of a compiler-as-a-service infrastructure for 10xLabs. 
+
 Consists of:
-* compiler stub deployed on each individual compiler node
+* compile wrapper which gets deployed on each individual compiler node
 * individual build packs
-* DEB package provisioning scripts
+* Debian/Ubuntu package build scripts
 
-Usage:
+## Compile Kit cookbook
 
-	/opt/10xlabs-compile/bin/create kit_name rsa_key
+It's easy to create new compile kit. Directory structure is following
 
-	/opt/10xlabs-compile/bin/exec SANDBOX-ID
+* `bin` with the all actions supported by compile kit (exposed via comp_serv API)
+* `etc` internal configuration (`etc/version` is used for versioning - both internal and deb package)
+* `sbin` for `sbin/setup` script which is used to install compile kit dependencies
 
-	/opt/10xlabs-compile/bin/destroy SANDBOX-ID 
+Compile kit name should include only `a..z0..9-`, ie. `10xeng-java` and not (10xeng_java).
 
+## Compile Kit Actions
 
-## Compile Kit structure
+All compile kit actions are executed with the UID of sandbox owner (same as sandbox name) and within the sandbox directory.
 
-* Compile kits names shoud include only a..z0..9-
-* **TODO** bin/version should test all dependencies before returning actual version
+Action output gets streamed back to the user as-it-is. 
 
+# TODOs
 
-		/compile/bin/create test_kit "https://dl.dropbox.com/s/jr77ovew0z4gziw/validSample.tar.gz?dl=1, https://www.dropbox.com/s/jr77ovew0z4gziw/validSample.tar.gz" "rsa-key"
+* set default nice/cgroups for all executed actions
+* limit execution of action to 10 seconds / 30 seconds (based on the tenant)
+* sandbox quota
