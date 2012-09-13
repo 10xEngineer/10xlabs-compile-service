@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# create build dir
+mkdir build
+mkdir build-test
+
+# compile all the source files
+javac **/*.java -classpath ./lib -sourcepath ./src -d ./build -g
+
+# compile all the test files
+javac **/*.java -classpath ./lib ./build -sourcepath ./test -d ./build-test -g
