@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-#TODO
+# TODO: Hardcoded Main class for now. Should be configurable/dynamic
+java -classpath ./build:./lib Main
