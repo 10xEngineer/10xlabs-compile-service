@@ -5,7 +5,7 @@ mkdir build
 mkdir build-test
 
 # compile all the source files
-javac **/*.java -classpath ./lib -sourcepath ./src -d ./build -g
+javac src/**/*.java -classpath ./lib -sourcepath ./src -d ./build -g
 
 # compile all the test files
-javac **/*.java -classpath ./lib:./build -sourcepath ./test -d ./build-test -g
+#javac test/**/*.java -classpath ./lib:./build -sourcepath ./test -d ./build-test -g
