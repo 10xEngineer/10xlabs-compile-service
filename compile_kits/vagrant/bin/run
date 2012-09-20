@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+# prepare environment
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
+
