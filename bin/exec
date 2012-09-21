@@ -1,20 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
+#
+# Execute sandbox action
+#
+# Usage:
+# bin/execute compile-kit action args
+#
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
 
-# Fail fast and fail hard.
-set -eo pipefail
+require "compile/sandbox"
 
-# shared logic
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "${SCRIPT_DIR}/../share/compile/common"
+if ARGV.length < 2
+	abort "usage: create compile-kit action [args..]"
+end
 
-# common parameters
-if [ $# -lt 2 ]
-then
-	echo "usage: exec sandbox command [optional-command-args...]"
-	exit 502
-fi
+sandbox_id = ARGV.shift
+action = ARGV.shift
+args = ARGV
 
-sandbox_id=$1
-cmd=$2
-
-compile_kit_exec $sandbox_id $cmd $3 $4
+sandbox_exec(sandbox_id, action)

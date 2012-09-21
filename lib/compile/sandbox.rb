@@ -21,14 +21,20 @@ def sandbox_exec(sandbox_id, action, args = [])
 
 	kit_registry = get_compile_kits
 
+	# load default compile kits
+	default_kits_file = "/opt/compile/etc/default_kits"
+	default_kits = []
+	if File.exist?(default_kits_file)
+		_kits = File.open(default_kits_file, &:readline).strip
+		default_kits = _kits.strip.split(',')
+	end
+
 	Dir.chdir(sandbox_path(sandbox_id)) do
 		compile_kit = File.open('.compile', &:readline).strip
 
 		synchronize_data(sandbox_id)
 
 		if compile_kit.empty? or compile_kit == "detect"			
-			# FIXME get default kit_list
-			default_kits = ['vagrant', 'java', '10xlabs-definition']
 			processed = []
 			compile_list = []
 
@@ -53,9 +59,11 @@ def sandbox_exec(sandbox_id, action, args = [])
 			sandbox_file(sandbox_id, '.compile', compile_list.join(','))
 		else
 			compile_list = compile_kit.split(',')
-		end
 
-		puts compile_list.inspect
+			compile_list.each do |kit|
+				run_compilation(sandbox_id, kit, action, args)
+			end
+		end
 
 		# TODO run compilation
 		compile_list = compile_kit
@@ -66,7 +74,7 @@ def evaluate(sandbox_id, compile_list)
 	_list = []
 
 	compile_list.each do |compiler|
-		res = run_compilation(sandbox_id, compiler, "detect", true)
+		res = run_compilation(sandbox_id, compiler, "detect", [], true)
 		
 		if res[0] == 0
 			kits = res[1].strip.split('\n')[0].split(',')
@@ -78,7 +86,7 @@ def evaluate(sandbox_id, compile_list)
 	_list
 end
 
-def run_compilation(sandbox_id, compile_kit, action, first_line = false)
+def run_compilation(sandbox_id, compile_kit, action, args, first_line = false)
 	# TODO configurable
 	compile_root = "/opt/compile"
 	sandbox_root = sandbox_path(sandbox_id, 'repo')

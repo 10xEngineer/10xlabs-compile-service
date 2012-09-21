@@ -25,8 +25,6 @@ def get_compile_kits(compile_root = '/opt/compile')
 		end
 	end
 
-	ap registry
-
 	registry
 end
 
