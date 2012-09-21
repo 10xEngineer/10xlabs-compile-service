@@ -1,33 +1,31 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
+#
+# Creates new Compile Sandbox
+#
+# Usage:
+# bin/create compile-kit source_url rsa_key
+#
+# * compile-kit = name of compile kit to use/or 'detect'
+# * source_url = data source to compile (GIT repository/URL)
+# * rsa_key = RSA key used to authenticate access to remote resource (GIT repo)
+#
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
 
-# Fail fast and fail hard.
-set -feo pipefail
+require "compile/sandbox"
 
-# shared logic
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "${SCRIPT_DIR}/../share/compile/common"
+unless ARGV.length == 3
+	abort "usage: create kit_name source rsa_key"
+end
 
-# common parameters
-if [ $# -ne 3 ]
-then
-	echo "usage: create kit_name source rsa_key"
-	exit 502
-fi
+compile_kit = ARGV.shift
+source_url = ARGV.shift
+rsa_key = ARGV.shift
 
-kit_name=$1
-source_url=$2
-rsa_key=$3
+sandbox_id = generate_sandbox_id
+action = File.basename $0
 
-if [ ! -f "${compiler_root}/$1/${version_file}" ] 
-then
-	echo "Requested compiler kit '$kit_name' does not exists."
-	exit 3
-fi
+sandbox_create(sandbox_id, compile_kit, source_url, rsa_key)
+sandbox_exec(sandbox_id, action)
 
-# generate new sandbox
-sandbox_id=$(gen_token)
-
-create_sandbox $sandbox_id $kit_name $source_url $rsa_key
-compile_kit_exec $sandbox_id "create"
-
-echo "sandbox_id=${sandbox_id}"
+puts sandbox_id

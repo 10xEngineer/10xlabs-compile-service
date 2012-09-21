@@ -9,6 +9,9 @@ target_dir="${tmpdir}${app_dir}"
 
 mkdir -p ${target_dir}
 cp -R bin ${target_dir}
+cp -R etc ${target_dir}
+cp -R lib ${target_dir}
+# TODO remove (replaced by lib/)
 cp -R share ${target_dir}
 cp README.md ${target_dir}
 
