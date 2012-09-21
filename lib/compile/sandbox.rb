@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'compile/compile_kits'
 require 'compile/utils'
 require 'compile/git'
 require 'etc'
@@ -20,21 +21,45 @@ end
 def sandbox_exec(sandbox_id, action, args = [])
 	raise "Sandbox '#{sandbox_id} does not exists." unless File.exists?(sandbox_path(sandbox_id))
 
+	kit_registry = get_compile_kits
+
 	Dir.chdir(sandbox_path(sandbox_id)) do
 		compile_kit = File.open('.compile', &:readline).strip
 
 		synchronize_data(sandbox_id)
 
-		if compile_kit.empty? or compile_kit == "detect"
-			# TODO get default kit_list
+		if compile_kit.empty? or compile_kit == "detect"			
+			# FIXME get default kit_list
 			default_kits = ['vagrant', 'java', '10xlabs-definition']
+			processed = []
+			compile_list = []
 
-			compile_list = evaluate(sandbox_id, default_kits)
+
+			kits = default_kits
+			while kits.length > 0
+				_list = evaluate(sandbox_id, kits)
+
+				compile_list = compile_list + _list
+
+				processed = (processed + kits).uniq
+
+				kits = _list
+				_list.each do |k|
+					kits = kits + kit_registry[k][:allows]
+				end
+
+				kits = kits - processed
+			end
+
+			# TODO take list, search for new kits enabled by it (ie. java enables java-spring)
+			# TODO repeat until there are no new kits to evaluate
 
 			# TODO write it back to ~/.compile
 		else
 			compile_list = compile_kit.split(',')
 		end
+
+		puts compile_list.inspect
 
 		# TODO run compilation
 		compile_list = compile_kit
@@ -45,21 +70,19 @@ def evaluate(sandbox_id, compile_list)
 	_list = []
 
 	compile_list.each do |compiler|
-		res = run_compilation(sandbox_id, compiler, "detect")
+		res = run_compilation(sandbox_id, compiler, "detect", true)
 		
-		_list = _list + res[1].strip.split('\n')[0].split(',') if res[0] == 0
+		if res[0] == 0
+			kits = res[1].strip.split('\n')[0].split(',')
+
+			_list = _list + kits
+		end		
 	end
-
-	puts _list.inspect
-
-	# TODO if [ -x "${compiler_root}/${kit_name}/bin/${command}" ]
-		# TODO synchronize sandbox source
-		# TODO su $sandbox_id -c "${compiler_root}/${kit_name}/bin/${command} $3 $4"
 
 	_list
 end
 
-def run_compilation(sandbox_id, compile_kit, action)
+def run_compilation(sandbox_id, compile_kit, action, first_line = false)
 	# TODO configurable
 	compile_root = "/opt/compile"
 	sandbox_root = sandbox_path(sandbox_id, 'repo')

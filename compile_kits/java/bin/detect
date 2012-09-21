@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -f $1/pom.xml ]; then
-	echo "10xlabs-java"
+	echo "java"
 
 	exit 0
 fi
