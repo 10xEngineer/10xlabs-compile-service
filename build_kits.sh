@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # list of compile kits
-KITS=()
+declare -a KITS=()
 dir_list=`ls -l compile_kits/ | egrep '^d' | awk '{print $9}'`
 for f in $dir_list; do
-	[[ -d compile_kits/$f ]] && KITS+=("$f")
+	[[ -d compile_kits/$f ]] && KITS=("${KITS[@]}" "$f")
 done
 
 function prepare_kit() {
@@ -35,6 +35,6 @@ function prepare_kit() {
 }
 
 
-for kit in $KITS; do
+for kit in ${KITS[@]}; do
 	prepare_kit $kit
 done

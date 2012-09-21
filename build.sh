@@ -11,10 +11,8 @@ mkdir -p ${target_dir}
 cp -R bin ${target_dir}
 cp -R etc ${target_dir}
 cp -R lib ${target_dir}
-# TODO remove (replaced by lib/)
-cp -R share ${target_dir}
 cp README.md ${target_dir}
 
-fpm -s dir -t deb -d 'curl' -n 10xlabs-compile-service -v 0.1 -a all --exclude compile_kits -C $tmpdir .
+fpm -s dir -t deb -d 'curl' -n 10xlabs-compile-service -v 0.2 -a all --exclude compile_kits -C $tmpdir .
 
 rm -Rf $tmpdir
