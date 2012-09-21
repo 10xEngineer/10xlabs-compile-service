@@ -32,7 +32,7 @@ def sandbox_exec(sandbox_id, action, args = [])
 	Dir.chdir(sandbox_path(sandbox_id)) do
 		compile_kit = File.open('.compile', &:readline).strip
 
-		synchronize_data(sandbox_id)
+		synchronize_data(sandbox_id) unless action == "destroy"
 
 		if compile_kit.empty? or compile_kit == "detect"			
 			processed = []
@@ -68,6 +68,10 @@ def sandbox_exec(sandbox_id, action, args = [])
 		# TODO run compilation
 		compile_list = compile_kit
 	end
+end
+
+def sandbox_destroy(sandbox_id)
+	userdel(sandbox_id)
 end
 
 def evaluate(sandbox_id, compile_list)

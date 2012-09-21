@@ -1,22 +1,21 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 #
-# $1 sandbox
+# Execute sandbox action
+#
+# Usage:
+# bin/execute compile-kit action args
+#
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
 
-# Fail fast and fail hard.
-set -feo pipefail
+require "compile/sandbox"
 
-# shared logic
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-. "${SCRIPT_DIR}/../share/compile/common"
+unless ARGV.length == 1
+	abort "usage: destroy sandbox"
+end
 
-# common parameters
-if [ $# -ne 1 ]
-then
-	echo "usage: destroy sandbox"
-	exit 502
-fi
+sandbox_id = ARGV.shift
+action = File.basename $0
 
-sandbox_id=$1
-
-compile_kit_exec $sandbox_id "destroy"
-destroy_sandbox $sandbox_id
+sandbox_exec(sandbox_id, action)
+sandbox_destroy(sandbox_id)

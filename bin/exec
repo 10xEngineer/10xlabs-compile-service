@@ -11,7 +11,7 @@ $:.unshift File.expand_path("../../lib", __FILE__)
 require "compile/sandbox"
 
 if ARGV.length < 2
-	abort "usage: create compile-kit action [args..]"
+	abort "usage: create sandbox action [args..]"
 end
 
 sandbox_id = ARGV.shift

@@ -33,6 +33,20 @@ def useradd(sandbox_id, dhome = '/mnt/sandbox')
 	end
 end
 
+def userdel(sandbox_id, dhome = '/mnt/sandbox')
+	command = ['/usr/sbin/userdel', '-f', "#{sandbox_id}" ]
+	res = TenxLabs::External.execute(command.join(' '), false)
+
+	puts command.join(' ')
+	puts res.inspect
+
+	command = ['/bin/rm', '-Rf', "#{dhome}/#{sandbox_id}" ]
+	res = TenxLabs::External.execute(command.join(' '), false)
+
+	puts command.join(' ')
+	puts res.inspect
+end
+
 def generate_sandbox_id(length=24)
 	_chars =  [('a'..'z'),('0'..'9')].map{|i| i.to_a}.flatten
 	(0...length).map{ _chars[rand(_chars.length)] }.join
