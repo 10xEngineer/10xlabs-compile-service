@@ -4,8 +4,6 @@ require 'compile/utils'
 require 'compile/git'
 require 'etc'
 
-# TODO if kit == 'detect' - automatically invoice all base kit's detect + all expanded kits
-
 def sandbox_create(sandbox_id, kit, source_url, rsa_key)
 	# TODO would be much nicer to have block with sandbox_id
 	useradd(sandbox_id)
@@ -51,10 +49,8 @@ def sandbox_exec(sandbox_id, action, args = [])
 				kits = kits - processed
 			end
 
-			# TODO take list, search for new kits enabled by it (ie. java enables java-spring)
-			# TODO repeat until there are no new kits to evaluate
-
-			# TODO write it back to ~/.compile
+			# write actual compile list back to sandbox
+			sandbox_file(sandbox_id, '.compile', compile_list.join(','))
 		else
 			compile_list = compile_kit.split(',')
 		end
