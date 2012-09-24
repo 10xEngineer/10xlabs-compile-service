@@ -9,7 +9,7 @@ def sync_repo(sandbox_id, source_url, ssh_identity = nil)
 
 	target_path = sandbox_path(sandbox_id, 'repo')
 	if File.exists? target_path
-		command = ['git', 'pull']
+		command = ["cd #{target_path} &&", 'git', 'pull']
 		res = TenxLabs::External.execute(command.join(' '), false)
 	else
 		command = ['git', 'clone', source_url, 'repo']

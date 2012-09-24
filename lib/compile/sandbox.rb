@@ -34,7 +34,7 @@ def sandbox_exec(sandbox_id, action, args = [])
 
 		synchronize_data(sandbox_id) unless action == "destroy"
 
-		if compile_kit.empty? or compile_kit == "detect"			
+		if compile_kit.empty? or compile_kit == "detect"
 			processed = []
 			compile_list = []
 

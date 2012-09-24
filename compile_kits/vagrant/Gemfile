@@ -5,3 +5,4 @@ gem 'vagrant'
 gem 'grit'
 gem "facets"
 gem "erubis"
+gem "microcloud"
