@@ -104,6 +104,7 @@ def run_compilation(sandbox_id, compile_kit, action, args, first_line = false)
 	Dir.chdir(sandbox_root) do
 		res = run_as(sandbox_id) do
 			command = [action_command, sandbox_root]
+			command = command + args
 
 			res = TenxLabs::External.execute(command.join(' '), false) do |line|
 				puts line unless action == "detect"
