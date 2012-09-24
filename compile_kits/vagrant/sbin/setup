@@ -1,2 +1,11 @@
 #!/usr/bin/env bash
 
+#
+# TODO Better compile kit distribution and environment setup
+#
+
+apt-get -y install virtualbox
+
+cd /opt/compile/vagrant
+bundle install
+

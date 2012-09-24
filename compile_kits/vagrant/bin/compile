@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+# prepare environment
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
+
+require 'vagrant'
+require 'lab_builder'
+require 'git_target'
+
+root = File.expand_path(ARGV.shift)
+vagrant_file = File.join(root, "Vagrantfile")
+unless File.exists? vagrant_file
+	abort "Vagrant file does not exists."
+end
+
+puts root
+
+git_target = GitTarget.new(root)
+
+puts '-0'
+# setup environment
+env = Vagrant::Environment.new(:cwd => root)
+
+# build VMs
+vms = []
+
+puts '-1'
+
+env.vms.each do |vm_name, vagrant_vm|
+	vm_config = env.config.for_vm(vm_name.to_sym).keys[:vm]
+
+	# validation
+
+	raise "Multiple provisioners not supported" unless vm_config.provisioners.length == 1
+	raise "Chef-solo is the only supported provisioner at the moment." unless vm_config.provisioners[0].shortcut == :chef_solo
+
+	vm = Vm.new "#{vm_name}" do
+		base_image "ubuntu"
+		run_list env.config.for_vm(vm_name.to_sym).keys[:vm].provisioners[0].config.run_list
+		hostname vm_name
+	end
+
+	vms << vm
+end
+
+metadata = Metadata.new nil, nil
+metadata.evaluate_block do
+	use "TenxLabs::ChefHandler"
+	version "0.1.1"
+
+	maintainer git_target.user_name
+	maintainer_email git_target.user_email
+	override_vms vms
+end
+
+puts '---'
+puts vms.inspect
+puts '---'
+puts metadata.inspect
+
+#lab_builder = LabBuilder.new(env, metadata, git_target)
+
+#lab_builder.build

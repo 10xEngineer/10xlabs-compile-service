@@ -1,0 +1,7 @@
+source 'http://rubygems.org'
+
+gem 'microcloud'
+gem 'vagrant'
+gem 'grit'
+gem "facets"
+gem "erubis"
