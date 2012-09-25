@@ -23,7 +23,9 @@ function prepare_kit() {
 
 	cp -R bin $target_dir
 	cp -R etc $target_dir
+	cp -R lib $target_dir
 	cp -R sbin $target_dir
+	cp -R Gemfile* $target_dir
 
 	version=`cat etc/version`
 
