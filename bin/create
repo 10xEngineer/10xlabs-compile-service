@@ -28,4 +28,4 @@ action = File.basename $0
 sandbox_create(sandbox_id, compile_kit, source_url, rsa_key)
 sandbox_exec(sandbox_id, action)
 
-puts sandbox_id
+puts "sandbox_id=#{sandbox_id}"
