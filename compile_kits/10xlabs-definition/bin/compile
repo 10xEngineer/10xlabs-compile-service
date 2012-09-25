@@ -6,18 +6,26 @@ $:.unshift File.expand_path("../../lib", __FILE__)
 
 require 'microcloud'
 require 'awesome_print'
+require 'config'
 
 sandbox_repo = ARGV.shift
 lab_name = ARGV.shift
 lab_token = ARGV.shift
 repo_rev = ARGV.shift
 
-# TODO get configuration (API endpoint)
+lab_name = 'tmpiss1'
+repo_rev = '1234567'
+
+config = get_config
+raise "Uknown Microcloud API endpoint: #{config["endpoint"]}}" unless config["endpoint"]
 
 # process metadata
-metadata = TenxLabs::Definition::Builder.construct(sandbox_repo)
+puts "Building metadata."
+metadata = TenxLabs::Definition::Builder.construct(sandbox_repo, repo_rev)
 
-ap metadata.to_json
+puts "Detected VMs: #{metadata.vms.map {|vm| vm.name}}"
 
-# TODO build other artefacts
-# TODO push to microcloud
+microcloud = TenxLabs::Microcloud.new(config["endpoint"])
+lab = microcloud.post_ext("/labs/#{lab_name}/versions", metadata.to_obj)
+
+puts "Lab definition submitted."
