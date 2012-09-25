@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+#
+# Wrapper to create & exec compile & destroy sandbox in one operations
+#
+# Usage:
+# bin/create compile-kit source_url rsa_key
+#
+# * compile-kit = name of compile kit to use/or 'detect'
+# * source_url = data source to compile (GIT repository/URL)
+# * rsa_key = RSA key used to authenticate access to remote resource (GIT repo)
+#
+
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
+
+require "compile/sandbox"
+
+if ARGV.length < 3
+	abort "usage: compile kit_name source rsa_key"
+end
+
+compile_kit = ARGV.shift
+source_url = ARGV.shift
+rsa_key = ARGV.shift
+args = ARGV
+
+sandbox_id = generate_sandbox_id
+
+sandbox_create(sandbox_id, compile_kit, source_url, rsa_key)
+sandbox_exec(sandbox_id, "compile", args)
+sandbox_destroy(sandbox_id)

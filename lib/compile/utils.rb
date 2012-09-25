@@ -37,14 +37,8 @@ def userdel(sandbox_id, dhome = '/mnt/sandbox')
 	command = ['/usr/sbin/userdel', '-f', "#{sandbox_id}" ]
 	res = TenxLabs::External.execute(command.join(' '), false)
 
-	puts command.join(' ')
-	puts res.inspect
-
 	command = ['/bin/rm', '-Rf', "#{dhome}/#{sandbox_id}" ]
 	res = TenxLabs::External.execute(command.join(' '), false)
-
-	puts command.join(' ')
-	puts res.inspect
 end
 
 def generate_sandbox_id(length=24)
