@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+# prepare environment
+$stdout.sync = true
+$:.unshift File.expand_path("../../lib", __FILE__)
+
+require 'microcloud'
+require 'awesome_print'
+
+sandbox_repo = ARGV.shift
+lab_name = ARGV.shift
+lab_token = ARGV.shift
+repo_rev = ARGV.shift
+
+# TODO get configuration (API endpoint)
+
+metadata_rb = File.join(sandbox_repo, 'metadata.rb')
+
+metadata = TenxLabs::Definition::Metadata.new
+metadata.from_file(metadata_rb)
+
+ap metadata.to_json
+
+# TODO build other artefacts
+# TODO push to microcloud

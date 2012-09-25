@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ ( -f $1/metadata.rb ) || ( -f $1/definition/metadata.rb ) ]]; then
+if [ -f $1/metadata.rb ]; then
 	echo "10xlabs-definition"
 
 	exit 0
