@@ -18,4 +18,4 @@ sandbox_id = ARGV.shift
 action = ARGV.shift
 args = ARGV
 
-sandbox_exec(sandbox_id, action)
+sandbox_exec(sandbox_id, action, args)
