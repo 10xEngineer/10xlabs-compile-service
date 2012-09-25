@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'ap'
 
 def get_compile_kits(compile_root = '/opt/compile')
 	registry = {}

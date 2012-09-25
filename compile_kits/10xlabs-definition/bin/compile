@@ -13,9 +13,6 @@ lab_name = ARGV.shift
 lab_token = ARGV.shift
 repo_rev = ARGV.shift
 
-lab_name = 'tmpiss1'
-repo_rev = '1234567'
-
 config = get_config
 raise "Uknown Microcloud API endpoint: #{config["endpoint"]}}" unless config["endpoint"]
 
