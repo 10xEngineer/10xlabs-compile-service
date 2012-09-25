@@ -16,8 +16,6 @@ def sync_repo(sandbox_id, source_url, ssh_identity = nil)
 		res = TenxLabs::External.execute(command.join(' '), false)
 	end
 
-	puts "Sandbox repository synchronized."
-
 	return true if res[0] == 0
 end
 
