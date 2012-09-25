@@ -14,10 +14,8 @@ repo_rev = ARGV.shift
 
 # TODO get configuration (API endpoint)
 
-metadata_rb = File.join(sandbox_repo, 'metadata.rb')
-
-metadata = TenxLabs::Definition::Metadata.new
-metadata.from_file(metadata_rb)
+# process metadata
+metadata = TenxLabs::Definition::Builder.construct(sandbox_repo)
 
 ap metadata.to_json
 
