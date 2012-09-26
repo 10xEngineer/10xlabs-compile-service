@@ -5,6 +5,8 @@ require 'compile/utils'
 # FIXME use ssh_identity to access private repositories
 
 def sync_repo(sandbox_id, source_url, ssh_identity = nil)
+	ENV['GIT_SSH'] = '/home/compile/wrap-ssh4git.sh'
+
 	raise "Invalid repository format" unless valid_repository?(source_url, ssh_identity)
 
 	target_path = sandbox_path(sandbox_id, 'repo')

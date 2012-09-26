@@ -31,7 +31,11 @@ module TenxLabs
           if raise_errors
             raise CommandFailure, "Error (#{stat.exitstatus}): #{error_message}"
           else
-            yield error
+            if block_given?
+              yield error 
+            else
+              puts error
+            end
           end
 
           return stat.exitstatus, error_message

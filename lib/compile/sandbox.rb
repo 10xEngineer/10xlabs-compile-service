@@ -4,6 +4,8 @@ require 'compile/utils'
 require 'compile/git'
 require 'etc'
 
+ENV["GIT_SSH"] = '/home/compile/wrap-ssh4git.sh'
+
 def sandbox_create(sandbox_id, kit, source_url, rsa_key)
 	# TODO would be much nicer to have block with sandbox_id
 	useradd(sandbox_id)
